@@ -142,7 +142,7 @@ class PineconeDataStore(DataStore):
                 metadata = result.metadata
                 # Remove document id and text from metadata and store it in a new variable
                 metadata_without_text = (
-                    {key: value for key, value in metadata.items() if key != "text"}
+                    {key: value if type(value) == str else str(value) for key, value in metadata.items() if key != "text"}
                     if metadata
                     else None
                 )

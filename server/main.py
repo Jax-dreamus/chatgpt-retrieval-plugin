@@ -1,5 +1,8 @@
 # This is a version of the main.py file found in ../../../server/main.py without authentication.
 # Copy and paste this into the main file at ../../../server/main.py if you choose to use no authentication for your retrieval plugin.
+import json
+from datetime import datetime
+from glob import glob
 from typing import Optional
 import uvicorn
 from fastapi import FastAPI, File, Form, HTTPException, Body, UploadFile
@@ -12,13 +15,12 @@ from models.api import (
     QueryRequest,
     QueryResponse,
     UpsertRequest,
-    UpsertResponse,
+    UpsertResponse, UpsertBulkResponse,
 )
 from datastore.factory import get_datastore
 from services.file import get_document_from_file
 
-from models.models import DocumentMetadata, Source
-
+from models.models import DocumentMetadata, Source, Document
 
 app = FastAPI()
 app.mount("/.well-known", StaticFiles(directory=".well-known"), name="static")
@@ -38,8 +40,8 @@ app.mount("/sub", sub_app)
     response_model=UpsertResponse,
 )
 async def upsert_file(
-    file: UploadFile = File(...),
-    metadata: Optional[str] = Form(None),
+        file: UploadFile = File(...),
+        metadata: Optional[str] = Form(None),
 ):
     try:
         metadata_obj = (
@@ -61,11 +63,42 @@ async def upsert_file(
 
 
 @app.post(
+    "/upsert-local-files",
+    response_model=UpsertBulkResponse,
+)
+async def upsert_local_files():
+    succeed_ids = []
+    failed_ids = []
+    for filename in glob("upsert_docs/*.json"):
+        with open(filename, encoding='utf-8') as f:
+            data = json.load(f)
+
+        # TODO: metadata 및 id 정교화 필요
+        document = Document(
+            id=str(datetime.strptime(
+                data['metadata']['post-date'],
+                '%Y년 %m월 %d일').date()
+            ),
+            text=data['text'],
+            metadata=DocumentMetadata(source=Source.file)
+        )
+        try:
+            ids = await datastore.upsert([document])
+            succeed_ids.extend(ids)
+        except Exception as e:
+            logger.error(e)
+            failed_ids.append(document.id)
+
+    return UpsertBulkResponse(succeed_ids=succeed_ids,
+                              failed_ids=failed_ids)
+
+
+@app.post(
     "/upsert",
     response_model=UpsertResponse,
 )
 async def upsert(
-    request: UpsertRequest = Body(...),
+        request: UpsertRequest = Body(...),
 ):
     try:
         ids = await datastore.upsert(request.documents)
@@ -80,7 +113,7 @@ async def upsert(
     response_model=QueryResponse,
 )
 async def query_main(
-    request: QueryRequest = Body(...),
+        request: QueryRequest = Body(...),
 ):
     try:
         results = await datastore.query(
@@ -98,7 +131,7 @@ async def query_main(
     description="Accepts search query objects with query and optional filter. Break down complex questions into sub-questions. Refine results by criteria, e.g. time / source, don't do this often. Split queries if ResponseTooLargeError occurs.",
 )
 async def query(
-    request: QueryRequest = Body(...),
+        request: QueryRequest = Body(...),
 ):
     try:
         results = await datastore.query(
@@ -115,7 +148,7 @@ async def query(
     response_model=DeleteResponse,
 )
 async def delete(
-    request: DeleteRequest = Body(...),
+        request: DeleteRequest = Body(...),
 ):
     if not (request.ids or request.filter or request.delete_all):
         raise HTTPException(

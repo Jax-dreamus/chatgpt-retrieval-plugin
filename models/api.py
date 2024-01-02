@@ -16,6 +16,11 @@ class UpsertResponse(BaseModel):
     ids: List[str]
 
 
+class UpsertBulkResponse(BaseModel):
+    succeed_ids: List[str]
+    failed_ids: List[str]
+
+
 class QueryRequest(BaseModel):
     queries: List[Query]
 
