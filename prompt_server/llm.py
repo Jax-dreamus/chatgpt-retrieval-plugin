@@ -1,12 +1,10 @@
 # libraries
 from __future__ import annotations
-import json
 from fastapi import WebSocket
 from langchain.adapters import openai as lc_openai
 from colorama import Fore, Style
 from typing import Optional
 
-from prompt_server.prompts import auto_agent_instructions
 from prompt_server.utils import timeit
 
 
@@ -58,6 +56,7 @@ async def send_chat_completion_request(
         messages, model, temperature, max_tokens, stream, llm_provider, websocket
 ):
     if not stream:
+        # TODO: chatgpt api 토큰 얼마나 쓰는지 report하도록 기능 추가
         result = lc_openai.ChatCompletion.create(
             model=model,  # Change model here to use different models
             messages=messages,
