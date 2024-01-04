@@ -10,8 +10,8 @@ from models.models import (
     QueryResult,
     QueryWithEmbedding,
 )
-from services.chunks import get_document_chunks
-from services.openai import get_embeddings
+from services.vector_search.chunks import get_document_chunks
+from services.vector_search.openai import get_embeddings
 
 
 class DataStore(ABC):

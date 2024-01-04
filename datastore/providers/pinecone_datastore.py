@@ -15,7 +15,7 @@ from models.models import (
     QueryWithEmbedding,
     Source,
 )
-from services.date import to_unix_timestamp
+from services.vector_search.date import to_unix_timestamp
 
 # Read environment variables for Pinecone configuration
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")
