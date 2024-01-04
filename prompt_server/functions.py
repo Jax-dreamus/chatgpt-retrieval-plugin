@@ -7,8 +7,10 @@ from colorama import Fore, Style
 from prompt_server.llm import create_chat_completion
 from prompt_server.prompts import auto_agent_instructions, generate_search_queries_prompt, get_report_by_type, \
     generate_summary_prompt
+from prompt_server.utils import timeit
 
 
+@timeit
 async def choose_agent(query):
     """
     Chooses the agent automatically
@@ -136,6 +138,7 @@ async def summarize_url(query, raw_data, agent_role_prompt, cfg):
     return summary
 
 
+@timeit
 async def generate_report(query, context, agent_role_prompt, report_type, websocket):
     """
     generates the final report
@@ -154,8 +157,9 @@ async def generate_report(query, context, agent_role_prompt, report_type, websoc
     generate_prompt = get_report_by_type(report_type)
     report = ""
     try:
-        print("generate_prompt!!")
+        print(">>>>>>>>>>>>>>>>>>>>>> generate_prompt!! <<<<<<<<<<<<<<<<<<<<<<<<<")
         print(generate_prompt(query, context, os.getenv('REPORT_FORMAT', 'APA'), int(os.getenv('TOTAL_WORDS', 1000))))
+        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
         report = await create_chat_completion(
             model=os.getenv('SMART_LLM_MODEL', "gpt-4-1106-preview"),
             messages=[

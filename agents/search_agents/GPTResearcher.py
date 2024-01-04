@@ -3,6 +3,7 @@ import time
 from agents.search_agents.memory import Memory
 from prompt_server.compression import PineconeRetriever
 from prompt_server.functions import stream_output, generate_report, choose_agent
+from prompt_server.utils import timeit
 
 
 class GPTResearcher:
@@ -46,6 +47,7 @@ class GPTResearcher:
         time.sleep(2)
         return report
 
+    @timeit
     async def get_similar_content_by_query(self, query):
         await stream_output("logs", f"📃 드림어스 컴퍼니 블로그에서 관련된 정보 찾는중 : {query}...", self.websocket)
         # Summarize Raw Data

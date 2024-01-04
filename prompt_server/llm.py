@@ -7,8 +7,10 @@ from colorama import Fore, Style
 from typing import Optional
 
 from prompt_server.prompts import auto_agent_instructions
+from prompt_server.utils import timeit
 
 
+@timeit
 async def create_chat_completion(
         messages: list,  # type: ignore
         model: Optional[str] = None,
@@ -51,6 +53,7 @@ async def create_chat_completion(
 import logging
 
 
+@timeit
 async def send_chat_completion_request(
         messages, model, temperature, max_tokens, stream, llm_provider, websocket
 ):
@@ -91,30 +94,3 @@ async def stream_response(model, messages, temperature, max_tokens, llm_provider
                 paragraph = ""
     return response
 
-
-def choose_agent(smart_llm_model: str, llm_provider: str, task: str) -> dict:
-    """Determines what server should be used
-    Args:
-        task (str): The research question the user asked
-        smart_llm_model (str): the llm model to be used
-        llm_provider (str): the llm provider used
-    Returns:
-        server - The server that will be used
-        agent_role_prompt (str): The prompt for the server
-    """
-    try:
-        response = create_chat_completion(
-            model=smart_llm_model,
-            messages=[
-                {"role": "system", "content": f"{auto_agent_instructions()}"},
-                {"role": "user", "content": f"task: {task}"}],
-            temperature=0,
-            llm_provider=llm_provider
-        )
-        agent_dict = json.loads(response)
-        print(f"Agent: {agent_dict.get('server')}")
-        return agent_dict
-    except Exception as e:
-        print(f"{Fore.RED}Error in choose_agent: {e}{Style.RESET_ALL}")
-        return {"server": "Default Agent",
-                "agent_role_prompt": "You are an AI critical thinker research assistant. Your sole purpose is to write well written, critically acclaimed, objective and structured reports on given text."}

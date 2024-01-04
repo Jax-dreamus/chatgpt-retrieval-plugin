@@ -1,7 +1,31 @@
+import asyncio
+from functools import wraps
+
 import aiofiles
 import urllib
 import uuid
+import time
 from md2pdf.core import md2pdf
+
+
+def timeit(func):
+    async def process(func, *args, **params):
+        if asyncio.iscoroutinefunction(func):
+            print('this function is a coroutine: {}'.format(func.__name__))
+            return await func(*args, **params)
+        else:
+            print('this is not a coroutine')
+            return func(*args, **params)
+
+    async def helper(*args, **params):
+        start = time.time()
+        result = await process(func, *args, **params)
+
+        print(f'{func.__name__}.time >>>>>>>>>>>>>>>>> {time.time() - start} <<<<<<<<<<<<<<<<<')
+        return result
+
+    return helper
+
 
 async def write_to_file(filename: str, text: str) -> None:
     """Asynchronously write text to a file in UTF-8 encoding.
@@ -15,6 +39,7 @@ async def write_to_file(filename: str, text: str) -> None:
 
     async with aiofiles.open(filename, "w", encoding='utf-8') as file:
         await file.write(text_utf8)
+
 
 async def write_md_to_pdf(text: str) -> str:
     """Converts Markdown text to a PDF file and returns the file path.
