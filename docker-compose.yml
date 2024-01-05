@@ -2,7 +2,7 @@ version: '3'
 services:
   prompt-server:
     container_name: prompt-server
-    image: registry.infra.music-flo.io/appfollow/appfollow-flask:test
+    image: registry.infra.music-flo.io/reco/chatgpt-retrieval-plugin
     command: ["sh", "-c", "uvicorn prompt_server.main:app --host 0.0.0.0 --port 80}"]
     ports:
       - '7080:7080'
@@ -10,7 +10,7 @@ services:
       - /home/ec2-user/chatgpt-retrieval-plugin:/app
   vector-search-server:
     container_name: vector-search-server
-    image: registry.infra.music-flo.io/appfollow/appfollow-nginx:test
+    image: registry.infra.music-flo.io/reco/chatgpt-retrieval-plugin
     command: ["sh", "-c", "uvicorn server.main:app --host 0.0.0.0 --port 70 --reload }"]
     ports:
       - '7000:7000'
