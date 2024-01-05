@@ -34,7 +34,6 @@ const GPTResearcher = (() => {
         } else if (data.type === 'path') {
           updateState("finished")
           updateDownloadLink(data);
-
         }
       };
   
