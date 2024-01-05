@@ -3,7 +3,7 @@ services:
   prompt-server:
     container_name: prompt-server
     image: registry.infra.music-flo.io/reco/chatgpt-retrieval-plugin
-    command: ["bash -c uvicorn prompt_server.main:app"]
+    command: ["bash", "-c", "uvicorn", "prompt_server.main:app"]
     ports:
       - '7080:7080'
     volumes:
@@ -13,7 +13,7 @@ services:
   vector-search-server:
     container_name: vector-search-server
     image: registry.infra.music-flo.io/reco/chatgpt-retrieval-plugin
-    command: ["bash -c uvicorn vector_server.main:app"]
+    command: ["bash", "-c", "uvicorn", "vector_server.main:app"]
     ports:
       - '8001:8001'
     volumes:
