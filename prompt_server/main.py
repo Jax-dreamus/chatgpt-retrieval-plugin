@@ -61,4 +61,4 @@ async def websocket_endpoint(websocket: WebSocket):
 
 
 def start():
-    uvicorn.run("prompt_server.main:app", host="0.0.0.0", port=8080, reload=True)
+    uvicorn.run("prompt_server.main:app", host="0.0.0.0", port=7080, reload=True)

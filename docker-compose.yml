@@ -5,7 +5,7 @@ services:
     image: registry.infra.music-flo.io/appfollow/appfollow-flask:test
     command: ["sh", "-c", "uvicorn prompt_server.main:app --host 0.0.0.0 --port 80}"]
     ports:
-      - '8080:8080'
+      - '7080:7080'
     volumes:
       - /home/ec2-user/chatgpt-retrieval-plugin:/app
   vector-search-server:
@@ -13,6 +13,6 @@ services:
     image: registry.infra.music-flo.io/appfollow/appfollow-nginx:test
     command: ["sh", "-c", "uvicorn server.main:app --host 0.0.0.0 --port 70 --reload }"]
     ports:
-      - '8000:8000'
+      - '7000:7000'
     volumes:
       - /home/ec2-user/chatgpt-retrieval-plugin:/app
