@@ -8,6 +8,7 @@ import uvicorn
 from fastapi import FastAPI, File, Form, HTTPException, Body, UploadFile
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
+from starlette.responses import RedirectResponse
 
 from models.api import (
     DeleteRequest,
@@ -30,9 +31,14 @@ sub_app = FastAPI(
     title="Retrieval Plugin API",
     description="A retrieval API for querying and filtering documents based on natural language queries and metadata",
     version="1.0.0",
-    servers=[{"url": "https://your-app-url.com"}],
+    servers=[{"url": "https://0.0.0.0:8001"}],
 )
 app.mount("/sub", sub_app)
+
+
+@app.get("/")
+async def docs_redirect():
+    return RedirectResponse(url='/docs')
 
 
 @app.post(
@@ -78,7 +84,7 @@ async def upsert_local_files():
             id=str(datetime.strptime(
                 data['metadata']['post-date'],
                 '%Y년 %m월 %d일').date()
-            ),
+                   ),
             text=data['text'],
             metadata=DocumentMetadata(source=Source.file)
         )
@@ -174,4 +180,4 @@ async def startup():
 
 
 def start():
-    uvicorn.run("server.main:app", host="0.0.0.0", port=7000, reload=True)
+    uvicorn.run("vector_server.main:app", host="0.0.0.0", port=8001, reload=True)

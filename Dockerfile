@@ -1,6 +1,9 @@
 FROM python:3.10
 
-WORKDIR /tmp
+WORKDIR /app
 
-COPY ./requirements.txt ./requirements.txt
+COPY . /app
+
+ENV PYTHONPATH "${PYTHONPATH}:/app"
+
 RUN pip install -r requirements.txt
