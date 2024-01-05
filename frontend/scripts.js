@@ -29,6 +29,8 @@ const GPTResearcher = (() => {
           addAgentResponse(data);
         } else if (data.type === 'report') {
           writeReport(data, converter);
+        } else if (data.type === 'prompt') {
+          writePromptOutput(data, converter)
         } else if (data.type === 'path') {
           updateState("finished")
           updateDownloadLink(data);
@@ -65,6 +67,13 @@ const GPTResearcher = (() => {
       reportContainer.innerHTML += markdownOutput;
       updateScroll();
     };
+
+    const writePromptOutput = (data, converter) => {
+      const promptContainer = document.getElementById("promptContainer")
+      const markdownOutput = converter.makeHtml(data.output);
+      promptContainer.innerHTML += markdownOutput;
+      updateScroll();
+    }
   
     const updateDownloadLink = (data) => {
       const path = data.output;

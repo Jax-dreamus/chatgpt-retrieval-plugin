@@ -41,6 +41,7 @@ async def write_to_file(filename: str, text: str) -> None:
         await file.write(text_utf8)
 
 
+@timeit
 async def write_md_to_pdf(text: str) -> str:
     """Converts Markdown text to a PDF file and returns the file path.
 

@@ -157,9 +157,8 @@ async def generate_report(query, context, agent_role_prompt, report_type, websoc
     generate_prompt = get_report_by_type(report_type)
     report = ""
     try:
-        print(">>>>>>>>>>>>>>>>>>>>>> generate_prompt!! <<<<<<<<<<<<<<<<<<<<<<<<<")
-        print(generate_prompt(query, context, os.getenv('REPORT_FORMAT', 'APA'), int(os.getenv('TOTAL_WORDS', 1000))))
-        print(">>>>>>>>>>>>>>>>>>>>>>>>>>>>>><<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<")
+        prompt_output = generate_prompt(query, context, os.getenv('REPORT_FORMAT', 'APA'), int(os.getenv('TOTAL_WORDS', 1000)))
+        await websocket.send_json({"type": "prompt", "output": prompt_output})
         report = await create_chat_completion(
             model=os.getenv('SMART_LLM_MODEL', "gpt-4-1106-preview"),
             messages=[
