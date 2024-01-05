@@ -59,6 +59,3 @@ async def websocket_endpoint(websocket: WebSocket):
     except WebSocketDisconnect:
         await manager.disconnect(websocket)
 
-
-def start():
-    uvicorn.run("prompt_server.main:app", host="0.0.0.0", port=7080, reload=True)

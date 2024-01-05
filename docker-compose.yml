@@ -3,21 +3,17 @@ services:
   prompt-server:
     container_name: prompt-server
     image: registry.infra.music-flo.io/reco/chatgpt-retrieval-plugin
-    command: ["bash", "-c", "uvicorn", "prompt_server.main:app"]
+    command: ["bash", "-c", "uvicorn prompt_server.main:app", "--host", "0.0.0.0", "--port", "8001"]
     ports:
-      - '7080:7080'
-    volumes:
-      - /home/ec2-user/chatgpt-retrieval-plugin:/app
+      - '8001:8001'
     environment:
       - OPENAI_API_KEY=${OPENAI_API_KEY}
   vector-search-server:
     container_name: vector-search-server
     image: registry.infra.music-flo.io/reco/chatgpt-retrieval-plugin
-    command: ["bash", "-c", "uvicorn", "vector_server.main:app"]
+    command: ["bash", "-c", "uvicorn vector_server.main:app", "--host", "0.0.0.0", "--port", "7080"]
     ports:
-      - '8001:8001'
-    volumes:
-      - /home/ec2-user/chatgpt-retrieval-plugin:/app
+      - '7080:7080'
     environment:
       - BEARER_TOKEN=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9
       - DATASTORE=pinecone

@@ -31,3 +31,4 @@ PyMuPDF==1.23.8
 md2pdf==1.0.1
 colorama==0.4.6
 Jinja2==3.1.2
+aiofiles==23.2.1

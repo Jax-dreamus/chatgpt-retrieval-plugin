@@ -31,7 +31,7 @@ sub_app = FastAPI(
     title="Retrieval Plugin API",
     description="A retrieval API for querying and filtering documents based on natural language queries and metadata",
     version="1.0.0",
-    servers=[{"url": "https://0.0.0.0:8001"}],
+    servers=[{"url": "https://0.0.0.0:7080"}],
 )
 app.mount("/sub", sub_app)
 
@@ -178,6 +178,3 @@ async def startup():
     global datastore
     datastore = await get_datastore()
 
-
-def start():
-    uvicorn.run("vector_server.main:app", host="0.0.0.0", port=8001, reload=True)
