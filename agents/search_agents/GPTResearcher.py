@@ -53,7 +53,7 @@ class GPTResearcher:
         # Summarize Raw Data
         context_compressor = PineconeRetriever(
             pinecone_retrieve_api_url="http://vector-search-server:7080",
-            max_results=10
+            max_results=5
         )
         # Run Tasks
         return context_compressor.get_context(query)
