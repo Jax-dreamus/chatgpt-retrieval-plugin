@@ -52,7 +52,7 @@ class GPTResearcher:
         await stream_output("logs", f"📃 드림어스 컴퍼니 블로그에서 관련된 정보 찾는중 : {query}...", self.websocket)
         # Summarize Raw Data
         context_compressor = PineconeRetriever(
-            pinecone_retrieve_api_url="http://0.0.0.0:8001",
+            pinecone_retrieve_api_url="http://vector-search-server:8001",
             max_results=10
         )
         # Run Tasks
