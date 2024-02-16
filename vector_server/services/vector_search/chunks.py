@@ -1,11 +1,11 @@
 from typing import Dict, List, Optional, Tuple
 import uuid
 import os
-from models.models import Document, DocumentChunk, DocumentChunkMetadata
 
 import tiktoken
 
-from services.vector_search.openai import get_embeddings
+from vector_server.models.models import Document, DocumentChunk, DocumentChunkMetadata
+from vector_server.services.vector_search.gpt_utils import get_embeddings
 
 # Global variables
 tokenizer = tiktoken.get_encoding(

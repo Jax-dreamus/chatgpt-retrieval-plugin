@@ -2,16 +2,10 @@ from abc import ABC, abstractmethod
 from typing import Dict, List, Optional
 import asyncio
 
-from models.models import (
-    Document,
-    DocumentChunk,
-    DocumentMetadataFilter,
-    Query,
-    QueryResult,
-    QueryWithEmbedding,
-)
-from services.vector_search.chunks import get_document_chunks
-from services.vector_search.openai import get_embeddings
+from vector_server.models.models import Document, DocumentMetadataFilter, DocumentChunk, QueryResult, Query, \
+    QueryWithEmbedding
+from vector_server.services.vector_search.chunks import get_document_chunks
+from vector_server.services.vector_search.gpt_utils import get_embeddings
 
 
 class DataStore(ABC):

@@ -1,14 +1,12 @@
-# libraries
 from __future__ import annotations
 from fastapi import WebSocket
 from langchain.adapters import openai as lc_openai
 from colorama import Fore, Style
 from typing import Optional
 
-from prompt_server.utils import timeit
+import logging
 
 
-@timeit
 async def create_chat_completion(
         messages: list,  # type: ignore
         model: Optional[str] = None,
@@ -48,10 +46,6 @@ async def create_chat_completion(
     raise RuntimeError("Failed to get response from OpenAI API")
 
 
-import logging
-
-
-@timeit
 async def send_chat_completion_request(
         messages, model, temperature, max_tokens, stream, llm_provider, websocket
 ):
@@ -92,4 +86,3 @@ async def stream_response(model, messages, temperature, max_tokens, llm_provider
                     print(f"{Fore.GREEN}{paragraph}{Style.RESET_ALL}")
                 paragraph = ""
     return response
-

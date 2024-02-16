@@ -2,16 +2,6 @@ from datetime import datetime
 
 
 # TODO: 여기서 사내 문서를 잘 가져올 수 있도록 주어진 문서를 봐야한다고 지령 내려야 함, 혹은 consine similarity 계산, Jira 검색을 유도해도 좋을듯
-def generate_search_queries_prompt(question, max_iterations=1):
-    """ Generates the search queries prompt for the given question.
-    Args: question (str): The question to generate the search queries prompt for
-    Returns: str: The search queries prompt for the given question
-    """
-    return f'질문에 답하기 위한 정보를 찾기 위해 쓸만한 {max_iterations} 개의 검색어를 작성하세요. 질문 : "{question}"' \
-           f'만약 날짜 데이터가 필요하면 사용 하세요. 날짜 데이터: {datetime.now().strftime("%B %d, %Y")} ' \
-           f'다음과 같은 문자열 리스트 형식을 따라야 합니다. ["질문 1", "질문 2", "질문 3"]. ' \
-           f'한글 검색어를 제공해야 합니다.'
-
 
 def generate_report_prompt(question, context, report_format="apa", total_words=1000):
     """ Generates the report prompt for the given question and research summary.

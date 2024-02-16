@@ -1,6 +1,6 @@
 import time
 
-from agents.search_agents.memory import Memory
+from prompt_server.agents.search_agents.memory import Memory
 from prompt_server.functions import stream_output, generate_report, choose_agent
 from prompt_server.pinecone_retriever import PineconeRetriever
 from prompt_server.utils import timeit
@@ -31,7 +31,7 @@ class GPTResearcher:
         Returns:
             Report
         """
-        print(f"🔎 Running research for '{self.query}'...")
+        await stream_output("logs", f"🔎 Running research for '{self.query}'...", self.websocket)
         # Generate Agent
         self.agent, self.role = await choose_agent(self.query)
         await stream_output("logs", self.agent, self.websocket)
@@ -52,7 +52,7 @@ class GPTResearcher:
         await stream_output("logs", f"📃 드림어스 컴퍼니 블로그에서 관련된 정보 찾는중 : {query}...", self.websocket)
         # Summarize Raw Data
         context_compressor = PineconeRetriever(
-            pinecone_retrieve_api_url="http://vector-search-server:7080",
+            pinecone_retrieve_api_url="http://localhost:7080",
             max_results=5
         )
         # Run Tasks

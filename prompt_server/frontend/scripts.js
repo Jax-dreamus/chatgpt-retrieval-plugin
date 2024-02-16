@@ -11,18 +11,18 @@ const GPTResearcher = (() => {
       document.getElementById("output").innerHTML = "";
       document.getElementById("reportContainer").innerHTML = "";
       updateState("in_progress")
-  
+
       addAgentResponse({ output: "🤔 Thinking about research questions for the task..." });
-  
+
       listenToSockEvents();
     };
-  
+
     const listenToSockEvents = () => {
       const { protocol, host, pathname } = window.location;
       const ws_uri = `${protocol === 'https:' ? 'wss:' : 'ws:'}//${host}${pathname}ws`;
       const converter = new showdown.Converter();
       const socket = new WebSocket(ws_uri);
-  
+
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'logs') {
@@ -30,28 +30,28 @@ const GPTResearcher = (() => {
         } else if (data.type === 'report') {
           writeReport(data, converter);
         } else if (data.type === 'prompt') {
-          writePromptOutput(data, converter)
+          writePromptOutput(data, converter);
         } else if (data.type === 'path') {
-          updateState("finished")
+          updateState("finished");
           updateDownloadLink(data);
         }
       };
-  
+
       socket.onopen = (event) => {
         const task = document.querySelector('input[name="task"]').value;
         const report_type = document.querySelector('select[name="report_type"]').value;
         const agent = document.querySelector('input[name="agent"]:checked').value;
-  
+
         const requestData = {
           task: task,
           report_type: report_type,
           agent: agent,
         };
-  
+
         socket.send(`start ${JSON.stringify(requestData)}`);
       };
     };
-  
+
     const addAgentResponse = (data) => {
       const output = document.getElementById("output");
       output.innerHTML += '<div class="agent_response">' + data.output + '</div>';
@@ -59,7 +59,7 @@ const GPTResearcher = (() => {
       output.style.display = "block";
       updateScroll();
     };
-  
+
     const writeReport = (data, converter) => {
       const reportContainer = document.getElementById("reportContainer");
       const markdownOutput = converter.makeHtml(data.output);
@@ -73,16 +73,16 @@ const GPTResearcher = (() => {
       promptContainer.innerHTML += markdownOutput;
       updateScroll();
     }
-  
+
     const updateDownloadLink = (data) => {
       const path = data.output;
       document.getElementById("downloadLink").setAttribute("href", path);
     };
-  
+
     const updateScroll = () => {
       window.scrollTo(0, document.body.scrollHeight);
     };
-  
+
     const copyToClipboard = () => {
       const textarea = document.createElement('textarea');
       textarea.id = 'temp_element';

@@ -1,10 +1,7 @@
-# This is a version of the main.py file found in ../../../server/main.py without authentication.
-# Copy and paste this into the main file at ../../../server/main.py if you choose to use no authentication for your retrieval plugin.
 import json
 from datetime import datetime
 from glob import glob
 from typing import Optional
-import uvicorn
 from fastapi import FastAPI, File, Form, HTTPException, Body, UploadFile
 from fastapi.staticfiles import StaticFiles
 from loguru import logger
@@ -14,9 +11,8 @@ from models.api import (
     DeleteRequest,
     DeleteResponse,
     QueryRequest,
-    QueryResponse,
     UpsertRequest,
-    UpsertResponse, UpsertBulkResponse,
+    UpsertResponse, UpsertBulkResponse, QueryResponse,
 )
 from datastore.factory import get_datastore
 from services.vector_search.file import get_document_from_file
@@ -55,7 +51,7 @@ async def upsert_file(
             if metadata
             else DocumentMetadata(source=Source.file)
         )
-    except:
+    except Exception as e:
         metadata_obj = DocumentMetadata(source=Source.file)
 
     document = await get_document_from_file(file, metadata_obj)

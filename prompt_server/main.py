@@ -1,4 +1,3 @@
-import uvicorn
 from fastapi import FastAPI, Request, WebSocket, WebSocketDisconnect
 from fastapi.staticfiles import StaticFiles
 from fastapi.templating import Jinja2Templates
@@ -17,10 +16,10 @@ class ResearchRequest(BaseModel):
 
 app = FastAPI()
 
-app.mount("/site", StaticFiles(directory="./frontend"), name="site")
-app.mount("/static", StaticFiles(directory="./frontend/static"), name="static")
+app.mount("/site", StaticFiles(directory="./prompt_server/frontend"), name="site")
+app.mount("/static", StaticFiles(directory="./prompt_server/frontend/static"), name="static")
 
-templates = Jinja2Templates(directory="./frontend")
+templates = Jinja2Templates(directory="./prompt_server/frontend")
 
 manager = WebSocketManager()
 
@@ -58,4 +57,3 @@ async def websocket_endpoint(websocket: WebSocket):
 
     except WebSocketDisconnect:
         await manager.disconnect(websocket)
-

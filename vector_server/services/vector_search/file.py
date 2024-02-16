@@ -9,7 +9,7 @@ import csv
 import pptx
 from loguru import logger
 
-from models.models import Document, DocumentMetadata
+from vector_server.models.models import DocumentMetadata, Document
 
 
 async def get_document_from_file(
