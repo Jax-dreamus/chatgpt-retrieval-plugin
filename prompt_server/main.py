@@ -28,7 +28,7 @@ manager = WebSocketManager()
 @app.on_event("startup")
 def startup_event():
     if not os.path.isdir("outputs"):
-        os.makedirs("outputs")
+        os.makedirs("outputs", exist_ok=True)
     app.mount("/outputs", StaticFiles(directory="outputs"), name="outputs")
 
 
