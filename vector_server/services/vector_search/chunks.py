@@ -4,8 +4,8 @@ import os
 
 import tiktoken
 
-from vector_server.models.models import Document, DocumentChunk, DocumentChunkMetadata
-from vector_server.services.vector_search.gpt_utils import get_embeddings
+from models.models import Document, DocumentChunk, DocumentChunkMetadata
+from services.vector_search.gpt_utils import get_embeddings
 
 # Global variables
 tokenizer = tiktoken.get_encoding(

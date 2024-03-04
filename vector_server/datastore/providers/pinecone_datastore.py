@@ -5,10 +5,10 @@ from tenacity import retry, wait_random_exponential, stop_after_attempt
 import asyncio
 from loguru import logger
 
-from vector_server.datastore.datastore import DataStore
-from vector_server.models.models import DocumentChunkMetadata, DocumentChunk, QueryWithEmbedding, QueryResult, \
+from datastore.datastore import DataStore
+from models.models import DocumentChunkMetadata, DocumentChunk, QueryWithEmbedding, QueryResult, \
     DocumentChunkWithScore, Source, DocumentMetadataFilter
-from vector_server.services.vector_search.date import to_unix_timestamp
+from services.vector_search.date import to_unix_timestamp
 
 # Read environment variables for Pinecone configuration
 PINECONE_API_KEY = os.environ.get("PINECONE_API_KEY")

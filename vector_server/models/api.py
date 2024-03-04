@@ -1,7 +1,7 @@
 from pydantic import BaseModel
 from typing import List, Optional
 
-from vector_server.models.models import Document, Query, QueryResult, DocumentMetadataFilter
+from models.models import Document, Query, QueryResult, DocumentMetadataFilter
 
 
 class UpsertRequest(BaseModel):
