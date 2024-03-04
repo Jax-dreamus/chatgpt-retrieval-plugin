@@ -5,7 +5,7 @@ services:
       context: .
       dockerfile: Dockerfile.vector_server
     container_name: vector-search-server
-    image: registry.infra.music-flo.io/reco/rag-prompt-server
+    image: registry.infra.music-flo.io/reco/rag-vector-server
     command: ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "7080", "--workers", "4"]
     ports:
       - '7080:7080'
@@ -21,7 +21,7 @@ services:
       context: .
       dockerfile: Dockerfile.prompt_server
     container_name: prompt-server
-    image: registry.infra.music-flo.io/reco/rag-vector-server
+    image: registry.infra.music-flo.io/reco/rag-prompt-server
     command: ["uvicorn", "prompt_server.main:app", "--host", "0.0.0.0", "--port", "8001", "--workers", "4"]
     ports:
       - '8001:8001'
