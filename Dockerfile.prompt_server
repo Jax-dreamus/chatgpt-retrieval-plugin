@@ -1,9 +1,12 @@
 FROM python:3.10
 
-WORKDIR /app
+ENV WORKDIR=/app
+WORKDIR $WORKDIR
 
-COPY . /app
+COPY prompt_server $WORKDIR/prompt_server
+COPY prompt-server-requirements.txt $WORKDIR/prompt-server-requirements.txt
 
-ENV PYTHONPATH "${PYTHONPATH}:/app/prompt_server"
+ENV PYTHONPATH "${PYTHONPATH}:$WORKDIR"
+ENV PYTHONPATH "${PYTHONPATH}:$WORKDIR/prompt_server"
 
-RUN pip install -r requirements.txt
+RUN pip install -r prompt-server-requirements.txt

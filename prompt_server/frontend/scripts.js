@@ -3,7 +3,6 @@ const GPTResearcher = (() => {
       // Not sure, but I think it would be better to add event handlers here instead of in the HTML
       //document.getElementById("startResearch").addEventListener("click", startResearch);
       document.getElementById("copyToClipboard").addEventListener("click", copyToClipboard);
-
       updateState("initial");
     }
 
@@ -26,6 +25,8 @@ const GPTResearcher = (() => {
       socket.onmessage = (event) => {
         const data = JSON.parse(event.data);
         if (data.type === 'logs') {
+          console.log("listen socket results")
+          console.log(data)
           addAgentResponse(data);
         } else if (data.type === 'report') {
           writeReport(data, converter);

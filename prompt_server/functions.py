@@ -1,3 +1,4 @@
+import asyncio
 import json
 import os
 
@@ -86,4 +87,8 @@ async def stream_output(type, output, websocket=None, logging=True):
         print(output)
 
     if websocket:
+        print(f"websocket: {websocket}")
+        print(f"type: {type}")
+        print(f"streaming output: {output}")
         await websocket.send_json({"type": type, "output": output})
+        await asyncio.sleep(1)

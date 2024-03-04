@@ -3,7 +3,6 @@ import time
 from prompt_server.agents.search_agents.memory import Memory
 from prompt_server.functions import stream_output, generate_report, choose_agent
 from prompt_server.pinecone_retriever import PineconeRetriever
-from prompt_server.utils import timeit
 
 
 class GPTResearcher:
@@ -35,7 +34,6 @@ class GPTResearcher:
         # Generate Agent
         self.agent, self.role = await choose_agent(self.query)
         await stream_output("logs", self.agent, self.websocket)
-
         self.context = await self.get_similar_content_by_query(self.query)
 
         await stream_output("logs", f"✍️ Writing for research task: {self.query}...",
@@ -47,7 +45,6 @@ class GPTResearcher:
         time.sleep(2)
         return report
 
-    @timeit
     async def get_similar_content_by_query(self, query):
         await stream_output("logs", f"📃 드림어스 컴퍼니 블로그에서 관련된 정보 찾는중 : {query}...", self.websocket)
         # Summarize Raw Data

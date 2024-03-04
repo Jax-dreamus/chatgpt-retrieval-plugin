@@ -1,9 +1,12 @@
 FROM python:3.10
 
-WORKDIR /app
+ENV WORKDIR=/app
+WORKDIR $WORKDIR
 
-COPY . /app
+COPY vector_server $WORKDIR/vector_server
+COPY vector-server-requirements.txt $WORKDIR/vector-server-requirements.txt
 
-ENV PYTHONPATH "${PYTHONPATH}:/app/vector_server"
+ENV PYTHONPATH "${PYTHONPATH}:$WORKDIR"
+ENV PYTHONPATH "${PYTHONPATH}:$WORKDIR/vector_server"
 
-RUN pip install -r requirements.txt
+RUN pip install -r vector-server-requirements.txt

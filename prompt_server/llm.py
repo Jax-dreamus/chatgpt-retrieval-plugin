@@ -1,4 +1,7 @@
 from __future__ import annotations
+
+import asyncio
+
 from fastapi import WebSocket
 from langchain.adapters import openai as lc_openai
 from colorama import Fore, Style
@@ -82,6 +85,7 @@ async def stream_response(model, messages, temperature, max_tokens, llm_provider
             if "\n" in paragraph:
                 if websocket is not None:
                     await websocket.send_json({"type": "report", "output": paragraph})
+                    await asyncio.sleep(0.2)
                 else:
                     print(f"{Fore.GREEN}{paragraph}{Style.RESET_ALL}")
                 paragraph = ""

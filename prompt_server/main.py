@@ -4,8 +4,8 @@ from fastapi.templating import Jinja2Templates
 from pydantic import BaseModel
 import json
 import os
-from .utils import write_md_to_pdf
-from .websocket_manager import WebSocketManager
+from utils import write_md_to_pdf
+from websocket_manager import WebSocketManager
 
 
 class ResearchRequest(BaseModel):
@@ -44,6 +44,7 @@ async def websocket_endpoint(websocket: WebSocket):
     try:
         while True:
             data = await websocket.receive_text()
+            print(f"websocket receive text {data}")
             if data.startswith("start"):
                 json_data = json.loads(data[6:])
                 task = json_data.get("task")
