@@ -6,7 +6,6 @@ WORKDIR $WORKDIR
 COPY prompt_server $WORKDIR/prompt_server
 COPY prompt-server-requirements.txt $WORKDIR/prompt-server-requirements.txt
 
-ENV PYTHONPATH "${PYTHONPATH}:$WORKDIR"
 ENV PYTHONPATH "${PYTHONPATH}:$WORKDIR/prompt_server"
 
 RUN pip install -r prompt-server-requirements.txt
