@@ -1,9 +1,9 @@
 FROM python:3.10
 
-ENV WORKDIR=/app/vector_server
+ENV WORKDIR=/app
 WORKDIR $WORKDIR
 
-COPY vector_server $WORKDIR/vector_server
+COPY vector_server $WORKDIR/
 COPY vector-server-requirements.txt $WORKDIR/vector-server-requirements.txt
 
 ENV PYTHONPATH "${PYTHONPATH}:$WORKDIR/vector_server"
